@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "2dosRoP5W6zro99hfdE381/P72gVPCNk4rPBPgKh+3kG2Ir8HR5uQcbk8cRTcZQt5nofe8FoAQEGgahJ4lGI1g==",
+  "success": true,
+  "projectFilePath": "/Users/bartek/Desktop/Studia/ZTB/project_ztb/Project_ztb/Project_ztb/Project_ztb.csproj",
+  "expectedPackageFiles": [
+    "/Users/bartek/.nuget/packages/automapper/12.0.0/automapper.12.0.0.nupkg.sha512",
+    "/Users/bartek/.nuget/packages/csvhelper/29.0.0/csvhelper.29.0.0.nupkg.sha512",
+    "/Users/bartek/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}
