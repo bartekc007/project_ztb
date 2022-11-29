@@ -54,7 +54,7 @@ create table if not exists results(
 	result_Position int not null,
 	result_Position_Text varchar(2) not null,
 	result_Position_Order int not null,
-	result_Points int not null,
+	result_Points numeric(4,2) not null,
 	
 	foreign key (race_Id)
 		references races (race_Id),
@@ -100,7 +100,7 @@ create table if not exists driver_standings(
 	driver_Id serial not null,
 	driver_standing_points int not null,
 	driver_standing_position int not null,
-	driver_standing_position_Text varchar(2) not null,
+	driver_standing_position_Text varchar(5) not null,
 	driver_standing_wins int not null,
 	
 	foreign key (race_Id)
@@ -146,7 +146,7 @@ create table if not exists sprint_results(
 	sprint_result_position int not null,
 	sprint_result_position_text varchar(2) not null,
 	sprint_result_position_order int not null,
-	rsprint_result_points int not null,
+	rsprint_result_points numeric(4,2) not null,
 	
 	foreign key (race_Id)
 		references races (race_Id),

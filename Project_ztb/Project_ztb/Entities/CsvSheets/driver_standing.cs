@@ -2,7 +2,7 @@ using Project_ztb.Entities.Common;
 
 namespace Project_ztb.Entities;
 
-public class driver_standing : ISheet
+public class Driver_standing : ISheet
 {
     public int driverStandingsId { get; set; }
     public string raceId { get; set; }

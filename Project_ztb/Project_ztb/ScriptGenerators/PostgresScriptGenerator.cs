@@ -17,7 +17,12 @@ public class PostgresScriptGenerator
             {"status",GenerateStatusesInsert},
             {"constructor_results",GenerateConstructorResultsInsert},
             {"constructor_standings",GenerateConstructorStandingsInsert},
-            {"races",GenerateRacesInsert}
+            {"races",GenerateRacesInsert},
+            {"driver_standings",GenerateDriverStandingInsert},
+            {"lap_times",GenerateLapTimeInsert},
+            {"qualifying",GenerateQualifyingInsert},
+            {"results",GenerateResultInsert},
+            {"sprint_results",GenerateSprintResultInsert}
         };
     
     public void GenerateFile(CsvSheet sheet,IEnumerable<ISheet> records)
@@ -47,7 +52,7 @@ public class PostgresScriptGenerator
         {
             Circuit item = (Circuit) i;
             sb.AppendLine(
-                $"({item.circuitId},'{item.circuitRef}','{item.name}','{item.location}',{item.lat},{item.lng},{item.alt}),"); 
+                $"({item.circuitId},'{item.circuitRef}','{item.name.Replace('\'',' ')}','{item.location}',{item.lat},{item.lng},{item.alt}),"); 
         }
         sb.Remove(sb.Length - 2, 2);
         sb.Replace("\\N", "0");
@@ -64,7 +69,7 @@ public class PostgresScriptGenerator
         {
             Driver item = (Driver) i;
             sb.AppendLine(
-                $"({item.driverId},'{item.driverRef}','{item.number}','{item.code}','{item.forename}','{item.surname}','{item.dob}','{item.nationality}'),"); 
+                $"({item.driverId},'{item.driverRef.Replace('\'',' ')}','{item.number}','{item.code}','{item.forename.Replace('\'',' ')}','{item.surname.Replace('\'',' ')}','{item.dob}','{item.nationality}'),"); 
         }
 
         sb.Remove(sb.Length - 2, 2);
@@ -164,8 +169,104 @@ public class PostgresScriptGenerator
         return sb.ToString();
     }
 
+    private static string GenerateDriverStandingInsert(IEnumerable<ISheet> driver_standings)
+    {
+        var sb = new StringBuilder();
+        sb.Append(
+            $"INSERT INTO driver_standings ({nameof(DriverStandingPsql.driver_standing_Id)},{nameof(DriverStandingPsql.race_Id)},{nameof(DriverStandingPsql.driver_Id)},{nameof(DriverStandingPsql.driver_standing_points)},{nameof(DriverStandingPsql.driver_standing_position)},{nameof(DriverStandingPsql.driver_standing_position_Text)},{nameof(DriverStandingPsql.driver_standing_wins)}) ");
+        sb.Append("Values ");
+        foreach (var i in driver_standings)
+        {
+            Driver_standing item = (Driver_standing) i;
+            sb.AppendLine(
+                $"({item.driverStandingsId},{item.raceId},{item.driverId},{item.points},'{item.position}','{item.positionText}','{HandleTimeSpan(item.wins)}'),"); 
+        }
+
+        sb.Remove(sb.Length - 2, 2);
+        sb.Replace("\\N", "0");
+        sb.Append(";");
+        return sb.ToString();
+    }
+    
+    private static string GenerateLapTimeInsert(IEnumerable<ISheet> lap_times)
+    {
+        var sb = new StringBuilder();
+        sb.Append(
+            $"INSERT INTO lap_times ({nameof(LapTimePsql.race_Id)},{nameof(LapTimePsql.driver_Id)},{nameof(LapTimePsql.lap)},{nameof(LapTimePsql.lap_time_position)},{nameof(LapTimePsql.lap_time_time)} ");
+        sb.Append("Values ");
+        foreach (var i in lap_times)
+        {
+            Lap_time item = (Lap_time) i;
+            sb.AppendLine(
+                $"({item.raceId},{item.driverId},{item.lap},{item.position},'{HandleTimeSpan(item.time)}'),"); 
+        }
+
+        sb.Remove(sb.Length - 2, 2);
+        sb.Replace("\\N", "0");
+        sb.Append(";");
+        return sb.ToString();
+    }
+    
+    private static string GenerateQualifyingInsert(IEnumerable<ISheet> qualifyings)
+    {
+        var sb = new StringBuilder();
+        sb.Append(
+            $"INSERT INTO qualifyings ({nameof(QualifyingPsql.qualifying_Id)},{nameof(QualifyingPsql.race_Id)},{nameof(QualifyingPsql.driver_Id)},{nameof(QualifyingPsql.constructor_Id)},{nameof(QualifyingPsql.qualifying_position)},{nameof(QualifyingPsql.qualifying_q1)},{nameof(QualifyingPsql.qualifying_q2)},{nameof(QualifyingPsql.qualifying_q3)})");
+        sb.Append("Values ");
+        foreach (var i in qualifyings)
+        {
+            Qualifying item = (Qualifying) i;
+            sb.AppendLine(
+                $"({item.qualifyId},{item.raceId},{item.driverId},{item.constructorId},'{item.position}','{HandleTimeSpan(item.q1)}','{HandleTimeSpan(item.q2)}','{HandleTimeSpan(item.q3)}'),"); 
+        }
+
+        sb.Remove(sb.Length - 2, 2);
+        sb.Replace("\\N", "0");
+        sb.Append(";");
+        return sb.ToString();
+    }
+    
+    private static string GenerateResultInsert(IEnumerable<ISheet> results)
+    {
+        var sb = new StringBuilder();
+        sb.Append(
+            $"INSERT INTO results ({nameof(ResultPsql.result_Id)},{nameof(ResultPsql.race_Id)},{nameof(ResultPsql.driver_Id)},{nameof(ResultPsql.constructor_Id)},{nameof(ResultPsql.result_Number)},{nameof(ResultPsql.result_Grid)},{nameof(ResultPsql.result_Position)},{nameof(ResultPsql.result_Position_Text)},{nameof(ResultPsql.result_Position_Order)},{nameof(ResultPsql.result_Points)})");
+        sb.Append("Values ");
+        foreach (var i in results)
+        {
+            Result item = (Result) i;
+            sb.AppendLine(
+                $"({item.resultId},{item.raceId},{item.driverId},{item.constructorId},'{item.number}','{item.grid}','{item.position}','{item.positionText}','{item.positionOrder}','{item.points}'),"); 
+        }
+
+        sb.Remove(sb.Length - 2, 2);
+        sb.Replace("\\N", "0");
+        sb.Append(";");
+        return sb.ToString();
+    }
+    
+    private static string GenerateSprintResultInsert(IEnumerable<ISheet> sprint_results)
+    {
+        var sb = new StringBuilder();
+        sb.Append(
+            $"INSERT INTO sprint_results ({nameof(SprintResultPsql.sprint_resultId)},{nameof(SprintResultPsql.race_Id)},{nameof(SprintResultPsql.driver_Id)},{nameof(SprintResultPsql.constructor_Id)},{nameof(SprintResultPsql.sprint_result_number)},{nameof(SprintResultPsql.sprint_result_grid)},{nameof(SprintResultPsql.sprint_result_position)},{nameof(SprintResultPsql.sprint_result_position_text)},{nameof(SprintResultPsql.sprint_result_position_order)},{nameof(SprintResultPsql.rsprint_result_points)})");
+        sb.Append("Values ");
+        foreach (var i in sprint_results)
+        {
+            Sprint_result item = (Sprint_result) i;
+            sb.AppendLine(
+                $"({item.resultId},{item.raceId},{item.driverId},{item.constructorId},'{item.number}','{item.grid}','{item.position}','{item.positionText}','{item.positionOrder}','{item.points}'),"); 
+        }
+
+        sb.Remove(sb.Length - 2, 2);
+        sb.Replace("\\N", "0");
+        sb.Append(";");
+        return sb.ToString();
+    }
+
     private static string HandleTimeSpan(string time)
     {
-        return (time == "\\N") ? (new TimeSpan(0, 0, 0).ToString()) : time;
+        return (time == "\\N") ? (new TimeSpan(0, 0, 0).ToString()) 
+            : (time == "" ? (new TimeSpan(0, 0, 0).ToString()) : time);
     }
 }

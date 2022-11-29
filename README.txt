@@ -7,3 +7,17 @@
 Odpalanie Programu do generowanie skryptów:
     Przejdź do Project_ztb/bin/Debug/net6.0
     uruchom program poleceniem: ./Project_ztb arg1 arg2 ...
+
+Kolejnośc odpalania Skryptów psql:
+-circuits
+-drivers
+-constructors
+-statuses
+-races
+-results
+-constructor_results
+-constructor_standings
+-driver_standings
+-lap_times
+-qualifyings
+-sprint_results

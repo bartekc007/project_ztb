@@ -10,7 +10,7 @@ public class Qualifying : ISheet
     public string constructorId { get; set; }
     public string number { get; set; }
     public string position { get; set; }
-    public TimeSpan q1 { get; set; }
-    public TimeSpan q2 { get; set; }
-    public TimeSpan q3 { get; set; }
+    public string q1 { get; set; }
+    public string q2 { get; set; }
+    public string q3 { get; set; }
 }

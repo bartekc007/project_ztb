@@ -8,5 +8,5 @@ public class Lap_time : ISheet
     public string driverId { get; set; }
     public string lap { get; set; }
     public string position { get; set; }
-    public TimeSpan time { get; set; }
+    public string time { get; set; }
 }

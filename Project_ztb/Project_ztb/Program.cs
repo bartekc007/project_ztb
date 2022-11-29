@@ -14,6 +14,7 @@ public class Program
 {
     static void Main(string[] args)
     {
+        
         ParametersHelper.AssignParametters(args);
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {

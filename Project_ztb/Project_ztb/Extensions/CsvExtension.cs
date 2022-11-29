@@ -17,7 +17,12 @@ public static class QuerySheetGenerator
             {"constructor_standings", GetConstructor_standingQuery},
             {"races", GetRacesQuery},
             {"status", GetStatusQuery},
-            {"drivers", GetDriversQuery}
+            {"drivers", GetDriversQuery},
+            {"driver_standings", GetDriver_StandingsQuery },
+            {"lap_times",GetLap_TimesQuery},
+            {"qualifying",GetQualifyingQuery},
+            {"results",GetResultQuery},
+            {"sprint_results",GetSprintResultQuery}
         };
 
     public static IEnumerable<ISheet> Generate(string sheet,CsvReader csv)
@@ -85,6 +90,51 @@ public static class QuerySheetGenerator
         
         if (Parameters.GetNumberOfRecords().HasValue)
             query = query.Take<Status>(Parameters.GetNumberOfRecords().Value);
+        return query;
+    }
+    
+    private static IEnumerable<Driver_standing> GetDriver_StandingsQuery( CsvReader csv)
+    {
+        var query = csv.GetRecords<Driver_standing>();
+        
+        if (Parameters.GetNumberOfRecords().HasValue)
+            query = query.Take<Driver_standing>(Parameters.GetNumberOfRecords().Value);
+        return query;
+    }
+    
+    private static IEnumerable<Lap_time> GetLap_TimesQuery( CsvReader csv)
+    {
+        var query = csv.GetRecords<Lap_time>();
+        
+        if (Parameters.GetNumberOfRecords().HasValue)
+            query = query.Take<Lap_time>(Parameters.GetNumberOfRecords().Value);
+        return query;
+    }
+    
+    private static IEnumerable<Qualifying> GetQualifyingQuery( CsvReader csv)
+    {
+        var query = csv.GetRecords<Qualifying>();
+        
+        if (Parameters.GetNumberOfRecords().HasValue)
+            query = query.Take<Qualifying>(Parameters.GetNumberOfRecords().Value);
+        return query;
+    }
+    
+    private static IEnumerable<Result> GetResultQuery( CsvReader csv)
+    {
+        var query = csv.GetRecords<Result>();
+        
+        if (Parameters.GetNumberOfRecords().HasValue)
+            query = query.Take<Result>(Parameters.GetNumberOfRecords().Value);
+        return query;
+    }
+    
+    private static IEnumerable<Sprint_result> GetSprintResultQuery( CsvReader csv)
+    {
+        var query = csv.GetRecords<Sprint_result>();
+        
+        if (Parameters.GetNumberOfRecords().HasValue)
+            query = query.Take<Sprint_result>(Parameters.GetNumberOfRecords().Value);
         return query;
     }
 }
