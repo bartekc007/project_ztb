@@ -1,0 +1,12 @@
+db.createCollection('circuits');
+db.createCollection('drivers');
+db.createCollection('statuses');
+db.createCollection('constructors');
+db.createCollection('constructorsResults');
+db.createCollection('constructorStanding');
+db.createCollection('races');
+db.createCollection('driver_standings');
+db.createCollection('lap_times');
+db.createCollection('qualifyings');
+db.createCollection('results');
+db.createCollection('sprint_results');
