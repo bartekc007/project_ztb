@@ -36,7 +36,12 @@ public class Program
 
                 if (records != null)
                 {
-                    var generator = new PostgresScriptGenerator();
+                    IScriptGenerator generator;
+                    if(Parameters.GetDbEntity() == "postgres")
+                        generator = new PostgresScriptGenerator();
+                    else
+                        generator = new MongoScriptGenerator();
+                    
                     generator.GenerateFile(s,records); 
                 }
             }

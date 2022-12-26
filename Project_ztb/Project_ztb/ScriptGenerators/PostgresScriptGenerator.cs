@@ -3,10 +3,13 @@ using System.Text;
 using Project_ztb.Entities;
 using Project_ztb.Entities.Common;
 using Project_ztb.Entities.PostgresTables;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Project_ztb.ScriptGenerators;
 
-public class PostgresScriptGenerator
+public class PostgresScriptGenerator : IScriptGenerator
 {
     private IDictionary<string, Func<IEnumerable<ISheet>, string>> generators =
         new Dictionary<string, Func<IEnumerable<ISheet>, string>>
@@ -192,7 +195,7 @@ public class PostgresScriptGenerator
     {
         var sb = new StringBuilder();
         sb.Append(
-            $"INSERT INTO lap_times ({nameof(LapTimePsql.race_Id)},{nameof(LapTimePsql.driver_Id)},{nameof(LapTimePsql.lap)},{nameof(LapTimePsql.lap_time_position)},{nameof(LapTimePsql.lap_time_time)} ");
+            $"INSERT INTO lap_times ({nameof(LapTimePsql.race_Id)},{nameof(LapTimePsql.driver_Id)},{nameof(LapTimePsql.lap)},{nameof(LapTimePsql.lap_time_position)},{nameof(LapTimePsql.lap_time_time)}) ");
         sb.Append("Values ");
         foreach (var i in lap_times)
         {
